@@ -1,45 +1,31 @@
 from __future__ import annotations
 
 import re
-import sys
-from pathlib import Path
-from typing import TYPE_CHECKING, Container
+from typing import TYPE_CHECKING
 
-from src.exception import NoValuesError
+from ff_manager.const import REQUIRED_REQ_FIELDS
 
 if TYPE_CHECKING:
-    from src.classes import Asset
+    from collections.abc import Container
 
 
-def get_team_from_assets(
-    all_assets: Container[Asset],
-    valid_assets: Container[Asset],
-) -> set[str]:
-    valid_assets = [asset for asset in all_assets if asset in valid_assets]
-
-    teams = {asset.team_name for asset in valid_assets}
-
-    if len(teams) == 0:
-        raise NoValuesError(obj_name="opp teams")
-
-    return teams
+def containerize_str(val: str | Container[str]) -> Container[str]:
+    if isinstance(val, str):
+        return (val,)
+    return val
 
 
-def get_team_from_pos(
-    all_assets: Container[Asset],
-    valid_pos: Container[str],
-) -> set[str]:
-    valid_assets = [asset for asset in all_assets if asset.pos in valid_pos]
+def ingest_reqs(reqs: dict) -> dict:
+    for field in REQUIRED_REQ_FIELDS:
+        if field not in reqs:
+            raise ValueError(f"The key {field} must be in the reqs.")
 
-    teams = {asset.team_name for asset in valid_assets}
-
-    if len(teams) == 0:
-        raise NoValuesError(obj_name="opp teams")
-
-    return teams
+    return {k.replace("-", "_"): v for k, v in reqs.items()}
 
 
 def _correct_fuzzy_team_names(invalid_names: set, valid_names: set) -> dict:
+    # TODO: replace this w/string match
+
     invalid_names_list = list(invalid_names)
     valid_names_list = list(valid_names)
 
@@ -89,18 +75,6 @@ def _correct_fuzzy_team_names(invalid_names: set, valid_names: set) -> dict:
         except ValueError:
             pass
 
-        raise ValueError(f"Could not map {name}")  # noqa: TRY003
+        raise ValueError(f"Could not map {name}")
 
     return name_map
-
-
-def sink(obj, fname="trade-prospects.txt", *, alert=True):
-    if not obj:
-        raise NoValuesError("trades")
-    with Path.open("trade-prospects.txt", "w") as f:
-        original_stdout = sys.stdout
-        sys.stdout = f
-        print(obj)  # print to the subprocess
-        sys.stdout = original_stdout
-    if alert:
-        print(f"Check the `{fname} file.")

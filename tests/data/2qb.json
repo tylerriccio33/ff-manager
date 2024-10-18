@@ -1,0 +1,16 @@
+[
+    {
+        "id": 0,
+        "name": "player-0",
+        "pos": "QB",
+        "team": "team1",
+        "value": 5
+    },
+    {
+        "id": 1,
+        "name": "player-1",
+        "pos": "QB",
+        "team": "team2",
+        "value": 5
+    }
+]
