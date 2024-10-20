@@ -9,7 +9,7 @@ from ff_manager.utils import containerize_str
 if TYPE_CHECKING:
     from collections.abc import Callable, Container, Generator
 
-    from ff_manager.league import Asset
+    from ff_manager.model import Asset
     from ff_manager.trade import Package
 
 
@@ -110,9 +110,7 @@ class PackageFilter(Filter):
     ):
         self.max_assets = max_assets
         self.return_contains = return_contains
-        self.assets_from_team = containerize_str(
-            assets_from_team
-        )  # TODO: validate this; make set?
+        self.assets_from_team = containerize_str(assets_from_team)  # ? make set
         self.assets_not_from_team = containerize_str(assets_not_from_team)
         self.not_receive_pos = containerize_str(not_receive_pos)
         self.target_pos = containerize_str(target_pos)

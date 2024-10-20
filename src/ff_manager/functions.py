@@ -13,7 +13,7 @@ from ff_manager.trade import Package, Trade
 
 if TYPE_CHECKING:
     from ff_manager.filter import PackageFilter, ReceiveFilter, SendFilter
-    from ff_manager.league import League, Team
+    from ff_manager.model import League, Team
 
 
 def assemble_trades(
@@ -35,12 +35,11 @@ def assemble_trades(
         raise ValueError("No packages passed the send filter.")
 
     opp_team_names: set[str] = package_filter.get_matching_teams(
-        league_assets=league.assets
+        league_assets=league.players
     )
     with contextlib.suppress(KeyError):  # passed singular opp team
         opp_team_names.remove(team.name)
     opp_teams: list[Team] = [league[team_name] for team_name in opp_team_names]
-    # TODO: why not just use opp_team_names ?
 
     if not opp_teams:
         raise ValueError("No opposing teams with trade candidates found.")

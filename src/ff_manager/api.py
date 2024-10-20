@@ -10,73 +10,33 @@ from typing import TYPE_CHECKING
 import yaml
 from tqdm import tqdm
 
-from ff_manager.data import get_data
 from ff_manager.filter import PackageFilter, ReceiveFilter, SendFilter
 from ff_manager.functions import (
     assemble_trades,
     loc_best_trades,
 )
-from ff_manager.league import League
 from ff_manager.utils import ingest_reqs
 
 if TYPE_CHECKING:
-    from ff_manager.league import Trade
+    from ff_manager.model import Trade
 
 
-""" PRIORITY ORDER:
-    Move some things like asset, league, etc. to a model file
-    Distance From Lineup Decay:
-        - decay value with proximity
-    Basic Testing Plan:
-        - lineup optimizer
-        - trade assembler respects filters
-        - basic end to ends
-            - return trades sending the 1st overall
-            - trades for a qb/super
-    Position/Lineup Overhaul:
-        - system of positions, slot categories and specific slots
-        - pos manager seems useful but should be fleshed out
-        - seamless handling of no/any postion for picks
-        - move specific position handling away from Asset subclasses
-    Abstract to Different Files:
-        - move everything to different files
-        - this is feeling more like a monolith
-    Web UI
-"""
-
-
-def eval_trades(
-    team: str,
-    send_filter: SendFilter,
-    receive_filter: ReceiveFilter,
-    package_filter: PackageFilter,
-    max_fleece: float,
-    profile: Path | str | dict,
-    data,
-) -> list[Trade] | None:
-    """
-    Evaluate trades, given filter constaints and a value function..
-
-    Args:
-    ----
-        send_filter (SendFilter): _description_
-        receive_filter (ReceiveFilter): _description_
-        package_filter (PackageFilter): _description_
-        platform (str, optional): _description_. Defaults to "sleeper".
-    """
-    if isinstance(profile, dict):
-        loaded_profile = profile
+def eval_trades(league, reqs: str | Path | dict) -> list[Trade] | None:
+    """Evaluate trades, given filter constaints and a value function."""
+    if isinstance(reqs, str | Path):
+        with Path(reqs).open() as f:
+            reqs_loaded = defaultdict(lambda: None) | yaml.safe_load(f)
     else:
-        with Path(profile).open() as f:
-            loaded_profile: dict = yaml.safe_load(f)
-    league = League(
-        raw_player_data=data,
-        profile=loaded_profile,
-    )
+        reqs_loaded = reqs
+    reqs_loaded = ingest_reqs(reqs_loaded)
+
+    send_filter = SendFilter(**reqs_loaded)
+    receive_filter = ReceiveFilter(**reqs_loaded)
+    package_filter = PackageFilter(**reqs_loaded)
 
     # Assemble and Execute Trades:
     trades = assemble_trades(
-        team=league[team],
+        team=league[reqs_loaded["team"]],
         send_filter=send_filter,
         receive_filter=receive_filter,
         package_filter=package_filter,
@@ -88,37 +48,9 @@ def eval_trades(
     # Loc Best Trades:
     return loc_best_trades(
         trades=trades,
-        max_fleece=max_fleece,
+        max_fleece=reqs_loaded["max_fleece"],
         min_gain=0,
     )
-
-
-def _main(
-    reqs: dict, prof: dict, data: str | Path, sink_to: str | Path | None = None
-) -> list[Trade]:
-    send_filter = SendFilter(
-        **reqs,
-    )
-    receive_filter = ReceiveFilter(**reqs)
-    package_filter = PackageFilter(**reqs)
-
-    trades = eval_trades(
-        team=reqs["team"],
-        send_filter=send_filter,
-        receive_filter=receive_filter,
-        package_filter=package_filter,
-        profile=prof,
-        data=data,
-        max_fleece=reqs["max_fleece"],
-    )
-
-    if sink_to:
-        with Path(sink_to).open("w") as f:
-            original_stdout = sys.stdout
-            sys.stdout = f
-            print(trades)  # print to the subprocess
-            sys.stdout = original_stdout
-    return trades
 
 
 def main(
@@ -151,6 +83,14 @@ def main(
         else:
             raise ValueError("Platform must be sleepr or ESPN.")
 
-    loaded_data: list[dict] = get_data(data)
+    loaded_data: list[dict] = get_data(data)  # noqa: F821
 
-    return _main(reqs=reqs_loaded, prof=prof_loaded, data=loaded_data, sink_to=sink_to)
+    trades = _main(  # noqa: F821
+        reqs=reqs_loaded, prof=prof_loaded, data=loaded_data, sink_to=sink_to
+    )
+    if sink_to:
+        with Path(sink_to).open("w") as f:
+            original_stdout = sys.stdout
+            sys.stdout = f
+            print(trades)  # print to the subprocess
+            sys.stdout = original_stdout

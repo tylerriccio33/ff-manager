@@ -1,3 +1,3 @@
-from ff_manager.api import main
+from ff_manager.api import eval_trades
 
-__all__ = ["main"]
+__all__ = ["eval_trades"]

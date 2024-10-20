@@ -1,11 +1,10 @@
 from collections.abc import Callable, Generator
 from copy import copy
 
-from ff_manager.league import Asset, Team
+from ff_manager.model import Asset, Team
+from ff_manager.utils import diff_assets
 
 
-# TODO: I don't think we need some of these methods
-# - maybe we don't even need this abstraction
 class Package:
     def __init__(self, assets: set[Asset]):
         self.assets = assets
@@ -27,13 +26,6 @@ class Package:
 class Trade:
     """object holding details of a trade."""
 
-    @staticmethod  # TODO: evaluate this as a static method and not standalone
-    def _rm_assets(assets: list[Asset], rm: list[Asset]) -> tuple:
-        valid_assets = assets.copy()
-        for asset in rm:
-            valid_assets.remove(asset)
-        return tuple(valid_assets)
-
     def __init__(
         self,
         team1: Team,
@@ -53,11 +45,9 @@ class Trade:
         self.value2: float | None = None
 
     def execute_trade(self) -> None:
-        """Implement ftrade, adding new teams."""
-        # TODO: add real docstring to this
-
+        """Execute the trade."""
         # Create new team1:
-        retained_assets = self._rm_assets(assets=self.team1.assets, rm=self.sent_assets)
+        retained_assets = diff_assets(assets=self.team1.assets, rm=self.sent_assets)
         new_team1_assets = tuple(retained_assets + self.rec_assets)
         self.new_team1 = Team(
             name=self.team1.name,
@@ -68,7 +58,7 @@ class Trade:
         self.new_team1_value = self.new_team1.calc_extended_lineup_value()
 
         # Create new team2:
-        retained_assets = self._rm_assets(assets=self.team2.assets, rm=self.rec_assets)
+        retained_assets = diff_assets(assets=self.team2.assets, rm=self.rec_assets)
         new_team2_assets = tuple(retained_assets + self.sent_assets)
         self.new_team2 = Team(
             name=self.team2.name,

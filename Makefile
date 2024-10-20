@@ -23,6 +23,11 @@ example:
 cov:
 	@uv run pytest \
 		--cov-report term-missing \
+		--cov=ff_manager tests/ \
+		-m "not real"
+cov-all:
+	@uv run pytest \
+		--cov-report term-missing \
 		--cov=ff_manager tests/
 
 clean:

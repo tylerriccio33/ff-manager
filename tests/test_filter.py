@@ -1,9 +1,10 @@
-import json
 from pathlib import Path
 
 import pytest
+import yaml
 
-from ff_manager.api import _main
+from ff_manager.api import eval_trades
+from ff_manager.league import PLATFORM_SWITCH
 
 
 def _check_2qb(res) -> None:
@@ -23,12 +24,17 @@ def _check_2qb(res) -> None:
     assert cur_trade.rec_assets[0].name == "player-1"
 
 
-def _conf_test(prof: str | Path, data: str | Path, reqs) -> list:
+def _conf_test(prof: str | Path, data: str | Path, reqs: dict) -> list:
     with Path(prof).open() as fpath:
-        prof = json.load(fpath)
-    with Path(data).open() as fpath:
-        data = json.load(fpath)
-    return _main(reqs=reqs, prof=prof, data=data)
+        loaded_profile: dict = yaml.safe_load(fpath)
+    league_cls = PLATFORM_SWITCH[loaded_profile["platform"]]
+
+    refresh_data = reqs.get("refresh_data")
+    league = league_cls(
+        data_loc=data, profile=loaded_profile, refresh_data=refresh_data
+    )
+
+    return eval_trades(league=league, reqs=reqs)
 
 
 def test_same_value():
@@ -208,4 +214,4 @@ def test_not_contains_pos():
 
 
 if __name__ == "__main__":
-    test_return_not_contains_pos()
+    test_same_value()
