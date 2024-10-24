@@ -5,6 +5,8 @@ from typing import TypedDict
 
 import click
 import polars as pl
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 from ff_manager.const import KNOWN_PLAYER_MISMATCHES, TEAM_NAME_MATCH_CAP
 from ff_manager.lineup import make_lineup_setter
@@ -34,23 +36,34 @@ class BaseLeague(abc.ABC):
         if refresh_data:
             raw_data = self._download_data()
             self.save_data(data=raw_data, outfile_loc=data_loc)
-            self.player_data = raw_data
+            self.player_data = self._ingest_downloaded_data(raw_data)
         else:
             self.player_data = hierarchical_data_load(data_loc)
 
         self.players: list[Asset] = self._make_players_from_data()
-        self.lineup_setter = make_lineup_setter(profile)
+        self.lineup_setter = make_lineup_setter(**profile["lineup"])
         self.teams = self._build_teams()
 
+    @staticmethod
+    def _ingest_downloaded_data(
+        data: list[_PlayerData] | pa.Table,
+    ) -> list[_PlayerData]:
+        try:
+            return data.to_pylist()
+        except AttributeError:
+            return data
+
     @abc.abstractmethod
-    def _download_data(self) -> list[_PlayerData]:
+    def _download_data(self) -> list[_PlayerData] | pa.Table:
         """Download and form data from the internet."""
 
-    def save_data(self, data: list[_PlayerData], outfile_loc: str | Path) -> None:
-        import pyarrow as pa
-        import pyarrow.parquet as pq
-
-        pa_data = pa.Table.from_pylist(data)
+    def save_data(
+        self, data: list[_PlayerData] | pa.Table, outfile_loc: str | Path
+    ) -> None:
+        if isinstance(data, list):
+            pa_data = pa.Table.from_pylist(data)
+        else:
+            pa_data = data
         pq.write_table(pa_data, outfile_loc)
 
     def __getitem__(self, index):
@@ -115,7 +128,7 @@ class SleeperLeague(BaseLeague):
     ):
         super().__init__(profile, refresh_data=refresh_data, data_loc=data_loc)
 
-    def _download_data(self) -> list[_PlayerData]:
+    def _download_data(self) -> pa.Table:
         import json
 
         import duckdb
@@ -217,7 +230,7 @@ class SleeperLeague(BaseLeague):
                 f"WARNING: Some players were not matched to values. --> {missing_names}",
                 fg="red",
             )
-        return res
+        return res.to_arrow()
 
 
 class ESPNLeague(BaseLeague):

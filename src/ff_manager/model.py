@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections import deque
+import contextlib
 from functools import partial
 from typing import TYPE_CHECKING
 
@@ -13,21 +13,29 @@ class Asset:
 
     def __init__(
         self,
-        _id: str,
         name: str,
-        value: int,
+        _id: str | None = None,
+        value: int | None = None,
         team_name: str | None = None,
         pos: str | None = None,
     ):
         self._id = _id
         self.name = name
-        self.value = value
+        self.value = value if value else 0
         self.pos = pos
         self.slots: list[str] = self.pos
-        self.team_name = team_name.strip()
 
-    def __eq__(self, val: str) -> bool:
-        return val in (self.name, self._id)
+        with contextlib.suppress(AttributeError):
+            self.team_name = team_name.strip()
+
+    def __eq__(self, val: Asset | str) -> bool:
+        if isinstance(val, Asset):
+            comp_name = val.name
+            comp_id = val._id
+        else:
+            comp_name = val
+            comp_id = None
+        return comp_name == self.name or (comp_id is not None and comp_id == self._id)
 
     def __repr__(self) -> str:
         return f"{self.name}, {self.pos}, Value: {self.value:.2f}>"
@@ -36,9 +44,6 @@ class Asset:
 class Team:
     """Collection of players with lineup methods."""
 
-    def sort_assets(self) -> deque[Asset]:
-        return deque(sorted(self.assets, key=lambda x: x.value, reverse=True))
-
     def __init__(
         self,
         name: str,
@@ -46,9 +51,9 @@ class Team:
         lineup_setter: Callable,
     ):
         self.assets = [a for a in assets if a.value is not None]
-        self.sorted_assets = self.sort_assets()
+        self.assets = assets
         self.name = name
-        self.set_lineup = partial(lineup_setter, sorted_assets=self.sorted_assets)
+        self.set_lineup = partial(lineup_setter, assets=assets)
         self.lineup = None
 
     def calc_extended_lineup_value(
