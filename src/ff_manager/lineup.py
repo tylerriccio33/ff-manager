@@ -108,12 +108,10 @@ def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
             avail_players += players_in_special_slots
 
             for slot in regular_slots:
-                print(f"Trying to fill {slot}")
                 try:
                     player = next(a for a in avail_players if a.pos == slot)
                     avail_players.remove(player)
                     lineup[slot] = player
-                    print(f"Filled {slot} with {player}")
                 except StopIteration:
                     pass
 
@@ -123,12 +121,10 @@ def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
                 slot for slot in SPECIALS_SLOTS if slot in flat_slots
             ] * depth
             for slot in special_slots:
-                print(f"Trying to fill {slot}")
                 try:
                     player = next(a for a in avail_players if a.pos == slot)
                     avail_players.remove(player)
                     lineup[slot] = player
-                    print(f"Filled {slot} with {player}")
                 except StopIteration:
                     pass
 
