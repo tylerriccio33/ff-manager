@@ -146,9 +146,11 @@ def test_lineup_flex_complex_depth():
     assert lineup["RB1"] == "player1"
     assert lineup["RB2"] == "player2"
     assert lineup["WR1"] == "player6"
+    # assert lineup["WR2"] == "Player7"
     assert lineup["TE1"] == "player4"
     assert lineup["FLEX1"] == "player7"
     assert lineup["SUPER1"] == "player9"
+    # assert lineup.starter_value == 600
 
 
 if __name__ == "__main__":

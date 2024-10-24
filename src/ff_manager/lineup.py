@@ -4,6 +4,9 @@ import itertools
 from collections import UserDict
 from typing import TYPE_CHECKING
 
+from rich.console import Console
+from rich.table import Table
+
 from ff_manager.const import FLEX_POS, LINEUP_KEY_SORTER, SPECIALS_SLOTS, SUPER_POS
 
 if TYPE_CHECKING:
@@ -15,9 +18,11 @@ if TYPE_CHECKING:
 class LineupMeta(UserDict):  # Re-patched every time function is called
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._starter_value = None
-        self._start_value_set = False
         self._depth: int | None = None
+        self._starter_value = None
+        self._start_value_set: bool = False
+        self._starter_keys = []
+        self._starter_keys_value_set: bool = False
 
     def __setitem__(self, key, value):
         # Check if the key already exists
@@ -46,14 +51,67 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
         self._starter_value = value
         self._start_value_set = True
 
-    def __repr__(self) -> str:
-        sorted_players = []
+    @property
+    def starter_keys(self) -> list[str]:
+        return self._starter_keys
+
+    @starter_keys.setter
+    def starter_keys(self, keys: list[str]):
+        if self._starter_keys_value_set:
+            raise AttributeError("Starter keys is set upon construction only.")
+        self._starter_keys = keys
+        self._starter_keys_value_set = True
+
+    def pprint(self) -> None:
+        vertical_lineup: list[tuple] = []
         for sort_key in LINEUP_KEY_SORTER:
-            sorted_players.extend(
-                sorted((k, v) for k, v in self.data.items() if k.startswith(sort_key))
+            vertical_lineup.extend(
+                sorted(
+                    (k[:-1], k, v)
+                    for k, v in self.data.items()
+                    if k.startswith(sort_key)
+                )
             )
 
-        return "\n".join(f"{player[0]:<10}: {player[1]}" for player in sorted_players)
+        # Make horizontal
+        horizontal_lineup: list[list[tuple[str, Asset]]] = [
+            [p] for p in vertical_lineup if p[1] in self._starter_keys
+        ]
+        depth_players = [p for p in vertical_lineup if p[1] not in self._starter_keys]
+
+        for i, starter in enumerate(horizontal_lineup):
+            starter_pos_group: str = starter[0][0]
+            for depth_player in depth_players:
+                if depth_player[0] == starter_pos_group:
+                    horizontal_lineup[i].append(depth_player)
+
+        # Build Table:
+        max_depth = max(len(slot) for slot in horizontal_lineup)
+
+        table = Table(title="Depth Chart")
+
+        for i in range(max_depth):
+            table.add_column(f"Slot{i}", style="cyan", no_wrap=True)
+            table.add_column(
+                f"Player{i}", style="magenta", no_wrap=True, max_width=1_000
+            )
+
+        for slot in horizontal_lineup:
+            args = []
+            for i in range(max_depth):
+                try:
+                    args.append(str(slot[i][1]))
+                    args.append(str(slot[i][2]))
+                except IndexError:
+                    args.append(None)
+                    args.append(None)
+            table.add_row(*args)
+
+        console = Console()
+        console.print(table)
+
+    def __repr__(self):
+        raise TypeError("Use .pprint()")
 
 
 def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
@@ -74,6 +132,8 @@ def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
     def _setter(assets: Sequence[Asset]) -> LineupMeta:
         lineup = LineupMeta()
 
+        lineup._depth = depth
+
         # Iterate down lineup:
         all_sorted_players = sorted(assets, key=lambda a: a.value, reverse=True)
         avail_players = all_sorted_players.copy()
@@ -86,6 +146,7 @@ def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
             lineup[slot] = player
 
         if depth:
+            lineup.starter_keys = list(lineup.data.keys())
             lineup.starter_value = sum(player.value for player in lineup.data.values())
 
             # Iterate down regular spots using available players:

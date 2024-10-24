@@ -38,7 +38,7 @@ class Asset:
         return comp_name == self.name or (comp_id is not None and comp_id == self._id)
 
     def __repr__(self) -> str:
-        return f"{self.name:<8} : {self.pos:<2} : {self.value:.2f}"
+        return f"{self.name} - {self.value:.2f}"
 
 
 class Team:

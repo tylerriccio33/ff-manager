@@ -82,7 +82,7 @@ class Trade:
               Assets Sent: {self.sent_assets}
               Assets Received: {self.rec_assets}
               Team1 Lineup:
-              {self.new_team1.lineup!r}
+              {self.new_team1.lineup.pprint()}
               Team1 Bench:
               {self.new_team1.pprint_sorted_proximal_assets()}
               Team2 Lineup:
