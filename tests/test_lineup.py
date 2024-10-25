@@ -1,5 +1,86 @@
+import pytest
+
 from ff_manager.lineup import make_lineup_setter
 from ff_manager.model import Asset
+
+
+def test_very_horizontal_lineup():
+    setter = make_lineup_setter(RB=1, depth=2)
+    assets = [
+        Asset(name="player1", pos="RB", value=100),
+        Asset(name="player2", pos="RB", value=50),
+        Asset(name="player3", pos="RB", value=50),
+        Asset(name="player4", pos="RB", value=50),
+    ]
+    lineup = setter(assets=assets)
+
+    assert lineup.total_value == 200
+    assert lineup.starter_value == 100
+    assert lineup.starter_keys == ["RB1"]
+
+    lineup.pprint()
+
+
+def test_very_horizontal_lineup2():
+    setter = make_lineup_setter(RB=1, QB=1, depth=1)
+    assets = [
+        Asset(name="player1", pos="RB", value=100),
+        Asset(name="player2", pos="QB", value=100),
+        Asset(name="player3", pos="RB", value=50),
+    ]
+    lineup = setter(assets=assets)
+
+    assert lineup.total_value == 250
+    assert lineup.starter_value == 200
+    assert lineup.starter_keys == ["RB1", "QB1"]
+
+    lineup.pprint()
+
+
+def test_pprint_no_error():
+    setter = make_lineup_setter(RB=1)
+    assets = [
+        Asset(name="player1", pos="RB", value=100),
+        Asset(name="player2", pos="RB", value=50),
+    ]
+    lineup = setter(assets=assets)
+    lineup.pprint()
+
+
+def test_pprint_no_error_depth():
+    setter = make_lineup_setter(RB=1, depth=1)
+    assets = [
+        Asset(name="player1", pos="RB", value=100),
+        Asset(name="player2", pos="RB", value=50),
+    ]
+    lineup = setter(assets=assets)
+    lineup.pprint()
+
+
+def test_starter_value_privacy():
+    setter = make_lineup_setter(RB=1)
+    assets = [
+        Asset(name="player1", pos="RB", value=100),
+        Asset(name="player2", pos="RB", value=50),
+    ]
+    lineup = setter(assets=assets)
+    with pytest.raises(AttributeError, match="Starter value is set upon"):
+        lineup.starter_value = 0
+
+    lineup.starter_value  # Is retrievable
+
+
+def test_starter_keys_privacy():
+    setter = make_lineup_setter(RB=1, depth=1)  # Only set if using depth
+    assets = [
+        Asset(name="player1", pos="RB", value=100),
+        Asset(name="player2", pos="RB", value=50),
+    ]
+    lineup = setter(assets=assets)
+    with pytest.raises(AttributeError, match="Starter keys is set upon"):
+        lineup.starter_keys = 0
+
+    lineup.starter_keys  # Is retrievable
 
 
 def test_lineup_no_depth():
@@ -53,6 +134,24 @@ def test_lineup_depth():
 
     assert lineup["RB1"] == "player1"
     assert lineup["RB2"] == "player2"
+
+    assert lineup.starter_value == 100
+    assert lineup.total_value == 150
+
+
+def test_lineup_depth2():
+    setter = make_lineup_setter(RB=1, depth=1)
+    assets = [
+        Asset(name="player1", pos="RB", value=100),
+        Asset(name="player2", pos="RB", value=50),
+        Asset(name="player3", pos="RB", value=25),
+    ]
+    lineup = setter(assets=assets)
+
+    assert lineup["RB1"] == "player1"
+    assert lineup["RB2"] == "player2"
+    with pytest.raises(KeyError):
+        lineup["RB3"]
 
     assert lineup.starter_value == 100
     assert lineup.total_value == 150
@@ -150,8 +249,10 @@ def test_lineup_flex_complex_depth():
     assert lineup["TE1"] == "player4"
     assert lineup["FLEX1"] == "player7"
     assert lineup["SUPER1"] == "player9"
-    # assert lineup.starter_value == 600
+
+    assert lineup.starter_value == 620
+    assert lineup.total_value == 845
 
 
 if __name__ == "__main__":
-    test_lineup_flex_complex_depth()
+    test_pprint_no_error()

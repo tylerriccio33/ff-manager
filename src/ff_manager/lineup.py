@@ -21,7 +21,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
         self._depth: int | None = None
         self._starter_value = None
         self._start_value_set: bool = False
-        self._starter_keys = []
+        self._starter_keys: list[str] | None = None
         self._starter_keys_value_set: bool = False
 
     def __setitem__(self, key, value):
@@ -38,7 +38,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
 
     @property
     def total_value(self):
-        return sum(player.value for player in self.data.values())
+        return sum(getattr(player, "value", 0) for player in self.data.values())
 
     @property
     def starter_value(self):
@@ -75,9 +75,9 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
 
         # Make horizontal
         horizontal_lineup: list[list[tuple[str, Asset]]] = [
-            [p] for p in vertical_lineup if p[1] in self._starter_keys
+            [p] for p in vertical_lineup if p[1] in self.starter_keys
         ]
-        depth_players = [p for p in vertical_lineup if p[1] not in self._starter_keys]
+        depth_players = [p for p in vertical_lineup if p[1] not in self.starter_keys]
 
         for i, starter in enumerate(horizontal_lineup):
             starter_pos_group: str = starter[0][0]
@@ -102,7 +102,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
                 try:
                     args.append(str(slot[i][1]))
                     args.append(str(slot[i][2]))
-                except IndexError:
+                except IndexError:  # No player filled for this slot
                     args.append(None)
                     args.append(None)
             table.add_row(*args)
@@ -171,10 +171,11 @@ def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
             for slot in regular_slots:
                 try:
                     player = next(a for a in avail_players if a.pos == slot)
-                    avail_players.remove(player)
-                    lineup[slot] = player
                 except StopIteration:
                     pass
+                else:
+                    avail_players.remove(player)
+                    lineup[slot] = player
 
             # Iterate down special spots using all players
             avail_players = all_sorted_players.copy()
@@ -184,15 +185,17 @@ def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
             for slot in special_slots:
                 try:
                     player = next(a for a in avail_players if a.pos == slot)
-                    avail_players.remove(player)
-                    lineup[slot] = player
                 except StopIteration:
                     pass
+                else:
+                    avail_players.remove(player)
+                    lineup[slot] = player
 
         else:
             lineup.starter_value = sum(
                 getattr(player, "value", 0) for player in lineup.data.values()
             )
+            lineup.starter_keys = list(lineup.data.keys())
 
         return lineup
 

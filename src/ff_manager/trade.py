@@ -55,7 +55,7 @@ class Trade:
             lineup_setter=self._lineup_setter,
         )
         self.new_team1.lineup = self.new_team1.set_lineup()
-        self.new_team1_value = self.new_team1.calc_extended_lineup_value()
+        self.new_team1_value = self.new_team1.lineup.total_value
 
         # Create new team2:
         retained_assets = diff_assets(assets=self.team2.assets, rm=self.rec_assets)
@@ -66,13 +66,13 @@ class Trade:
             lineup_setter=self._lineup_setter,
         )
         self.new_team2.lineup = self.new_team2.set_lineup()
-        self.new_team2_value = self.new_team2.calc_extended_lineup_value()
+        self.new_team2_value = self.new_team2.lineup.total_value
 
         # Get Difference in Values:
         self.team1.lineup = self.team1.set_lineup()
         self.team2.lineup = self.team2.set_lineup()
-        self.team1_gain = self.new_team1_value - self.team1.calc_extended_lineup_value()
-        self.team2_gain = self.new_team2_value - self.team2.calc_extended_lineup_value()
+        self.team1_gain = self.new_team1_value - self.team1.lineup.total_value
+        self.team2_gain = self.new_team2_value - self.team2.lineup.total_value
 
     def __repr__(self):
         return f"""
@@ -83,12 +83,8 @@ class Trade:
               Assets Received: {self.rec_assets}
               Team1 Lineup:
               {self.new_team1.lineup.pprint()}
-              Team1 Bench:
-              {self.new_team1.pprint_sorted_proximal_assets()}
               Team2 Lineup:
               {self.new_team2.lineup}
-              Team2 Bench:
-              {self.new_team2.pprint_sorted_proximal_assets()}
               Team1 Gain: {self.team1_gain:.2f}
               Team2 Gain: {self.team2_gain:.2f}
               Team1 Value: {self.new_team1_value:.2f}
