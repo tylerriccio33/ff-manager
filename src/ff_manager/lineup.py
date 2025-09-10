@@ -114,7 +114,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
         return capture.get()
 
 
-def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:
+def make_lineup_setter(*, depth: int = 0, **lineup_template: int) -> Callable:
     nested_slots = [[slot] * n for slot, n in lineup_template.items()]
     flat_slots = tuple(itertools.chain.from_iterable(nested_slots))
 

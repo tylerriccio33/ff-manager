@@ -38,6 +38,8 @@ class BaseLeague(abc.ABC):
             self.save_data(data=raw_data, outfile_loc=data_loc)
             self.player_data = self._ingest_downloaded_data(raw_data)
         else:
+            if data_loc is None:
+                raise ValueError("data_loc must be provided if not refreshing data.")
             self.player_data = hierarchical_data_load(data_loc)
 
         self.players: list[Asset] = self._make_players_from_data()
@@ -49,7 +51,7 @@ class BaseLeague(abc.ABC):
         data: list[_PlayerData] | pa.Table,
     ) -> list[_PlayerData]:
         try:
-            return data.to_pylist()
+            return data.to_pylist()  # ty: ignore
         except AttributeError:
             return data
 

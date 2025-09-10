@@ -13,7 +13,8 @@ from ff_manager.trade import Package, Trade
 
 if TYPE_CHECKING:
     from ff_manager.filter import PackageFilter, ReceiveFilter, SendFilter
-    from ff_manager.model import League, Team
+    from ff_manager.league import BaseLeague
+    from ff_manager.model import Team
 
 
 def assemble_trades(
@@ -21,7 +22,7 @@ def assemble_trades(
     send_filter: SendFilter,
     receive_filter: ReceiveFilter,
     package_filter: PackageFilter,
-    league: League,
+    league: BaseLeague,
 ) -> list[Trade]:
     cur_packages = [
         Package(package)

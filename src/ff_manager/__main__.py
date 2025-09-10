@@ -2,7 +2,7 @@ import inspect
 
 import click
 
-from ff_manager import main
+from ff_manager.api import main
 from ff_manager.filter import PackageFilter, ReceiveFilter, SendFilter
 
 
@@ -11,6 +11,7 @@ def cli():
     pass
 
 
+# TODO: Use Fire
 @cli.command()
 def print_prof_opts():
     SLEEPER_PROF_EX = """

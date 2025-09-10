@@ -29,7 +29,8 @@ def hierarchical_data_load(loc: str | Path) -> list[dict]:
     raise FileNotFoundError(f"Could not find {loc!s}")
 
 
-def containerize_str(val: str | Container[str]) -> Container[str]:
+# TODO: Overload this
+def containerize_str(val: str | Container[str] | None) -> Container[str | None]:
     if isinstance(val, str):
         return (val,)
     return val

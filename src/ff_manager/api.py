@@ -11,17 +11,14 @@ import yaml
 from tqdm import tqdm
 
 from ff_manager.filter import PackageFilter, ReceiveFilter, SendFilter
-from ff_manager.functions import (
-    assemble_trades,
-    loc_best_trades,
-)
+from ff_manager.functions import assemble_trades, loc_best_trades
 from ff_manager.utils import ingest_reqs
 
 if TYPE_CHECKING:
     from ff_manager.model import Trade
 
 
-def eval_trades(league, reqs: str | Path | dict) -> list[Trade] | None:
+def eval_trades(league, reqs: str | Path | dict) -> list[Trade]:
     """Evaluate trades, given filter constaints and a value function."""
     if isinstance(reqs, str | Path):
         with Path(reqs).open() as f:

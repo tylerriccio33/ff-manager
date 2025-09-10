@@ -23,16 +23,6 @@ opts:
 example:
 	@uv run ff-manager find-trades --help
 
-cov:
-	@uv run pytest \
-		--cov-report term-missing \
-		--cov=ff_manager tests/ \
-		-m "not real"
-cov-all:
-	@uv run pytest \
-		--cov-report term-missing \
-		--cov=ff_manager tests/
-
 clean:
 	@rm -rf .pytest_cache
 	@rm .coverage

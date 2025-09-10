@@ -5,7 +5,7 @@ from functools import partial
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Iterable
 
 
 class Asset:
@@ -26,7 +26,7 @@ class Asset:
         self.slots: list[str] = self.pos
 
         with contextlib.suppress(AttributeError):
-            self.team_name = team_name.strip()
+            self.team_name = team_name.strip()  # ty: ignore
 
     def __eq__(self, val: Asset | str) -> bool:
         if isinstance(val, Asset):
@@ -47,7 +47,7 @@ class Team:
     def __init__(
         self,
         name: str,
-        assets: list[Asset],
+        assets: Iterable[Asset],
         lineup_setter: Callable,
     ):
         self.assets = [a for a in assets if a.value is not None]

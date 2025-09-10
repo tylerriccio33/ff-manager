@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from ff_manager.utils import containerize_str
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Container, Generator
+    from collections.abc import Callable, Generator, Iterable
 
     from ff_manager.model import Asset
     from ff_manager.trade import Package
@@ -122,7 +122,7 @@ class PackageFilter(Filter):
 
         self.return_contains_exclusive = return_contains_exclusive
 
-    def get_matching_teams(self, league_assets: Container[Asset]) -> set[str]:
+    def get_matching_teams(self, league_assets: Iterable[Asset]) -> set[str]:
         """Find all (including own) teams matching the criteria."""
         if self.assets_from_team:
             return set(self.assets_from_team)
