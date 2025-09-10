@@ -76,17 +76,17 @@ class Trade:
 
     def __repr__(self):
         return f"""
-              == Trade ================================================================
-              Team1: {self.team1.name}
-              Team2: {self.team2.name}
-              Assets Sent: {self.sent_assets}
-              Assets Received: {self.rec_assets}
-              Team1 Lineup:
-              {self.new_team1.lineup.pprint()}
-              Team2 Lineup:
-              {self.new_team2.lineup}
-              Team1 Gain: {self.team1_gain:.2f}
-              Team2 Gain: {self.team2_gain:.2f}
-              Team1 Value: {self.new_team1_value:.2f}
-              Team2 Value: {self.new_team2_value:.2f}
-              """
+== Trade ================================================================
+Team1:            {self.team1.name}
+Team2:            {self.team2.name}
+Assets Sent:      {self.sent_assets}
+Assets Received:  {self.rec_assets}
+Team1 Lineup:
+{self.new_team1.lineup!r}
+Team2 Lineup:
+{self.new_team2.lineup!r}
+Team1 Gain:       {self.team1_gain:.2f}
+Team2 Gain:       {self.team2_gain:.2f}
+Team1 Value:      {self.new_team1_value:.2f}
+Team2 Value:      {self.new_team2_value:.2f}
+"""

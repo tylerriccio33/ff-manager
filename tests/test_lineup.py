@@ -18,7 +18,7 @@ def test_very_horizontal_lineup():
     assert lineup.starter_value == 100
     assert lineup.starter_keys == ["RB1"]
 
-    lineup.pprint()
+    print(lineup)
 
 
 def test_very_horizontal_lineup2():
@@ -34,27 +34,27 @@ def test_very_horizontal_lineup2():
     assert lineup.starter_value == 200
     assert lineup.starter_keys == ["RB1", "QB1"]
 
-    lineup.pprint()
+    print(lineup)
 
 
-def test_pprint_no_error():
+def test_print_no_error():
     setter = make_lineup_setter(RB=1)
     assets = [
         Asset(name="player1", pos="RB", value=100),
         Asset(name="player2", pos="RB", value=50),
     ]
     lineup = setter(assets=assets)
-    lineup.pprint()
+    print(lineup)
 
 
-def test_pprint_no_error_depth():
+def test_print_no_error_depth():
     setter = make_lineup_setter(RB=1, depth=1)
     assets = [
         Asset(name="player1", pos="RB", value=100),
         Asset(name="player2", pos="RB", value=50),
     ]
     lineup = setter(assets=assets)
-    lineup.pprint()
+    print(lineup)
 
 
 def test_starter_value_privacy():
@@ -255,4 +255,4 @@ def test_lineup_flex_complex_depth():
 
 
 if __name__ == "__main__":
-    test_pprint_no_error()
+    test_very_horizontal_lineup2()

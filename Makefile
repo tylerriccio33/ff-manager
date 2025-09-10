@@ -1,5 +1,8 @@
 test:
-	@uv run pytest -m "not real"
+	@uv run pytest -m "not real" \
+		--cov src \
+		--cov-report term-missing
+	@rm .coverage
 
 prof:
 	@.venv/bin/pytest
@@ -35,4 +38,6 @@ clean:
 	@rm .coverage
 
 lint:
-	@uv tool run ruff check --fix
+	@uvx ruff format
+	@uvx ruff check --fix
+	@uvx ty check

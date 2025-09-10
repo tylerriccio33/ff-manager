@@ -62,7 +62,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
         self._starter_keys = keys
         self._starter_keys_value_set = True
 
-    def pprint(self) -> None:
+    def __repr__(self) -> str:
         vertical_lineup: list[tuple] = []
         for sort_key in LINEUP_KEY_SORTER:
             vertical_lineup.extend(
@@ -88,7 +88,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
         # Build Table:
         max_depth = max(len(slot) for slot in horizontal_lineup)
 
-        table = Table(title="Depth Chart")
+        table = Table()
 
         for i in range(max_depth):
             table.add_column(f"Slot{i}", style="cyan", no_wrap=True)
@@ -108,10 +108,10 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
             table.add_row(*args)
 
         console = Console()
-        console.print(table)
+        with console.capture() as capture:
+            console.print(table)
 
-    def __repr__(self):
-        raise TypeError("Use .pprint()")
+        return capture.get()
 
 
 def make_lineup_setter(depth: int = 0, **lineup_template: dict) -> Callable:

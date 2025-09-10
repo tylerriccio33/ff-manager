@@ -11,7 +11,7 @@ import polars as pl
 from ff_manager.const import REQUIRED_REQ_FIELDS
 
 if TYPE_CHECKING:
-    from collections.abc import Container
+    from collections.abc import Container, Iterable
 
     from ff_manager.model import Asset
 
@@ -50,11 +50,12 @@ def ingest_reqs(reqs: dict) -> dict:
     return {k.replace("-", "_"): v for k, v in reqs.items()}
 
 
-def sink_repr(obj: object, sink_to: str | Path) -> None:
+def sink_repr(obj: Iterable, sink_to: str | Path, *, iter_obj: bool = True) -> None:
     with Path(sink_to).open("w") as f:
         original_stdout = sys.stdout
         sys.stdout = f
-        print(obj)
+        concatenated: str = "\n".join(str(obj) for obj in obj)
+        print(concatenated)
         sys.stdout = original_stdout
 
 
