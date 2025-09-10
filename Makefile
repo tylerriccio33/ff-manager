@@ -2,7 +2,7 @@ test:
 	@uv run pytest -m "not real" \
 		--cov src \
 		--cov-report term-missing
-	@rm .coverage
+	@rm .coverage*
 
 prof:
 	@.venv/bin/pytest
