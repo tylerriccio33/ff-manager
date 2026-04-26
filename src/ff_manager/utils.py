@@ -11,7 +11,7 @@ import polars as pl
 from ff_manager.const import REQUIRED_REQ_FIELDS
 
 if TYPE_CHECKING:
-    from collections.abc import Container, Iterable
+    from collections.abc import Iterable
 
     from ff_manager.model import Asset
 
@@ -29,15 +29,16 @@ def hierarchical_data_load(loc: str | Path) -> list[dict]:
     raise FileNotFoundError(f"Could not find {loc!s}")
 
 
-# TODO: Overload this
-def containerize_str(val: str | Container[str] | None) -> Container[str | None]:
+def containerize_str(val: str | Iterable[str] | None) -> tuple[str, ...] | None:
+    if val is None:
+        return None
     if isinstance(val, str):
         return (val,)
-    return val
+    return tuple(val)
 
 
-def diff_assets(assets: list[Asset], rm: list[Asset]) -> tuple:
-    valid_assets = assets.copy()
+def diff_assets(assets: Iterable[Asset], rm: Iterable[Asset]) -> tuple[Asset, ...]:
+    valid_assets = list(assets)
     for asset in rm:
         valid_assets.remove(asset)
     return tuple(valid_assets)

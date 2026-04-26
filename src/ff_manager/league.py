@@ -34,6 +34,8 @@ class BaseLeague(abc.ABC):
     ):
         self.profile = profile
         if refresh_data:
+            if data_loc is None:
+                raise ValueError("data_loc must be provided when refreshing data.")
             raw_data = self._download_data()
             self.save_data(data=raw_data, outfile_loc=data_loc)
             self.player_data = self._ingest_downloaded_data(raw_data)
@@ -114,11 +116,11 @@ class BaseLeague(abc.ABC):
         """Instantiate players for each raw player returned from api."""
         return [
             Asset(
-                _id=i["id"],
+                _id=str(i["id"]),
                 team_name=i["team"],
                 name=i["name"],
                 pos=i["pos"],
-                value=i["value"],
+                value=int(i["value"]),
             )
             for i in self.player_data
         ]
@@ -220,11 +222,9 @@ class SleeperLeague(BaseLeague):
             ON jaro_winkler_similarity(with_team_name.name, dynasty_values.name) > .9
                     """).to_arrow_table()
 
-        res = (
-            pl.from_arrow(matched_players)
-            .filter(pl.col("_rank") == 1)
-            .drop("_sim", "_rank", "_alt_name")
-        )
+        matched_df = pl.from_arrow(matched_players)
+        assert isinstance(matched_df, pl.DataFrame)
+        res = matched_df.filter(pl.col("_rank") == 1).drop("_sim", "_rank", "_alt_name")
 
         missing_names = with_team_name.join(res, on="id", how="anti")
         if len(missing_names) > 0:

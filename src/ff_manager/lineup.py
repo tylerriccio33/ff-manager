@@ -24,7 +24,8 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
         self._starter_keys: list[str] | None = None
         self._starter_keys_value_set: bool = False
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key, item):
+        value = item
         # Check if the key already exists
         original_key = key
         counter = 1
@@ -53,7 +54,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
 
     @property
     def starter_keys(self) -> list[str]:
-        return self._starter_keys
+        return self._starter_keys or []
 
     @starter_keys.setter
     def starter_keys(self, keys: list[str]):
@@ -74,7 +75,7 @@ class LineupMeta(UserDict):  # Re-patched every time function is called
             )
 
         # Make horizontal
-        horizontal_lineup: list[list[tuple[str, Asset]]] = [
+        horizontal_lineup: list[list[tuple[str, str, Asset]]] = [
             [p] for p in vertical_lineup if p[1] in self.starter_keys
         ]
         depth_players = [p for p in vertical_lineup if p[1] not in self.starter_keys]

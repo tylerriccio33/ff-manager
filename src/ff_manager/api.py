@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -15,7 +14,7 @@ from ff_manager.functions import assemble_trades, loc_best_trades
 from ff_manager.utils import ingest_reqs
 
 if TYPE_CHECKING:
-    from ff_manager.model import Trade
+    from ff_manager.trade import Trade
 
 
 def eval_trades(league, reqs: str | Path | dict) -> list[Trade]:
@@ -53,41 +52,18 @@ def eval_trades(league, reqs: str | Path | dict) -> list[Trade]:
 def main(
     reqs: str | Path,
     profile: str | Path,
-    data: str | Path | None = None,
-    sink_to: str | Path | None = None,
-) -> None:
-    with Path(reqs).open() as f:
-        reqs_loaded = defaultdict(lambda: None) | yaml.safe_load(f)
-
-    reqs_loaded = ingest_reqs(reqs_loaded)
+    data_loc: str | Path,
+    *,
+    refresh_data: bool = False,
+) -> list[Trade]:
+    """Load profile + data, build the configured league, and evaluate trades."""
+    from ff_manager.league import PLATFORM_SWITCH
 
     with Path(profile).open() as f:
         prof_loaded: dict = yaml.safe_load(f)
 
-    if reqs_loaded["refresh_data"]:
-        from ff_manager.data import get_espn_data, get_sleeper_data
-
-        platform = prof_loaded["platform"]
-        if platform == "sleeper":
-            get_sleeper_data(league_id=prof_loaded["id"], parquet_outfile=data)
-        elif platform == "espn":
-            get_espn_data(
-                league_id=prof_loaded["id"],
-                espn_s2=prof_loaded["s2"],
-                swid=prof_loaded["swid"],
-                outfile=data,
-            )
-        else:
-            raise ValueError("Platform must be sleepr or ESPN.")
-
-    loaded_data: list[dict] = get_data(data)  # noqa: F821
-
-    trades = _main(  # noqa: F821
-        reqs=reqs_loaded, prof=prof_loaded, data=loaded_data, sink_to=sink_to
+    league_cls = PLATFORM_SWITCH[prof_loaded["platform"]]
+    league = league_cls(
+        profile=prof_loaded, data_loc=data_loc, refresh_data=refresh_data
     )
-    if sink_to:
-        with Path(sink_to).open("w") as f:
-            original_stdout = sys.stdout
-            sys.stdout = f
-            print(trades)  # print to the subprocess
-            sys.stdout = original_stdout
+    return eval_trades(league=league, reqs=reqs)

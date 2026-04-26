@@ -23,18 +23,20 @@ class Asset:
         self.name = name
         self.value = value if value else 0
         self.pos = pos
-        self.slots: list[str] = self.pos
+        self.slots: list[str] = [pos] if pos else []
 
         with contextlib.suppress(AttributeError):
             self.team_name = team_name.strip()  # ty: ignore
 
-    def __eq__(self, val: Asset | str) -> bool:
+    def __eq__(self, val: object) -> bool:
         if isinstance(val, Asset):
             comp_name = val.name
             comp_id = val._id
-        else:
+        elif isinstance(val, str):
             comp_name = val
             comp_id = None
+        else:
+            return NotImplemented
         return comp_name == self.name or (comp_id is not None and comp_id == self._id)
 
     def __repr__(self) -> str:

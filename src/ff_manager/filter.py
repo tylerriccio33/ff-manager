@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import contextlib
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
@@ -52,7 +51,7 @@ class SendFilter(Filter):
     def __call__(self, package: Package) -> bool:
         """Filter package."""
         # Pos:
-        with contextlib.suppress(TypeError):
+        if self.pos is not None:
             for pos in self.pos:
                 any_valid_pos = any(pos in player.slots for player in package.assets)
                 if any_valid_pos:
@@ -61,12 +60,12 @@ class SendFilter(Filter):
                 return False
 
         # Not Assets:
-        with contextlib.suppress(TypeError):
+        if self.not_assets is not None:
             if any(asset for asset in self.not_assets if asset in package):
                 return False
 
         # Assets:
-        with contextlib.suppress(TypeError):
+        if self.assets is not None:
             # check if all or any assets need to be in package
             exclusive_send_assets: Callable[[Generator], bool] = (
                 all if self.assets_exclusive else any
@@ -78,7 +77,7 @@ class SendFilter(Filter):
                 return False
 
         # Min Asset Value:
-        with contextlib.suppress(TypeError):
+        if self.min_asset_value is not None:
             if any(asset.value < self.min_asset_value for asset in package):
                 return False
 
@@ -128,7 +127,7 @@ class PackageFilter(Filter):
             return set(self.assets_from_team)
 
         # Teams owning a desired asset
-        with contextlib.suppress(TypeError):
+        if self.return_contains is not None:
             return {
                 asset.team_name
                 for asset in league_assets
@@ -145,7 +144,7 @@ class PackageFilter(Filter):
 
     def __call__(self, package: Package) -> bool:
         # Return contains:
-        with contextlib.suppress(TypeError):  # if no return contains
+        if self.return_contains is not None:
             # check if all or any assets need to be in package
             exclusive_return_contains: Callable[[Generator], bool] = (
                 all if self.return_contains_exclusive else any
@@ -157,14 +156,14 @@ class PackageFilter(Filter):
                 return False
 
         # Contains POS:
-        with contextlib.suppress(TypeError):
-            target_pos_set: set[str] = set(self.target_pos) | {None}
+        if self.target_pos is not None:
+            target_pos_set: set[str | None] = set(self.target_pos) | {None}
             overlapping_positions = target_pos_set & package._positions
             if not overlapping_positions:
                 return False
 
         # Not contains Pos:
-        with contextlib.suppress(TypeError):
+        if self.not_receive_pos is not None:
             if set(self.not_receive_pos) & package._positions:
                 return False
 
@@ -187,7 +186,7 @@ class ReceiveFilter(Filter):
 
     def __call__(self, package: Package) -> bool:
         # Invalid Positions:
-        with contextlib.suppress(TypeError):
+        if self.return_not_pos is not None:
             any_invalid_positions = any(
                 player for player in package if player.pos in self.return_not_pos
             )
@@ -195,7 +194,7 @@ class ReceiveFilter(Filter):
                 return False
 
         # Return Does Not Contain:
-        with contextlib.suppress(TypeError):
+        if self.return_does_not_contain is not None:
             any_invalid_players = any(
                 player in package for player in self.return_does_not_contain
             )
@@ -203,7 +202,7 @@ class ReceiveFilter(Filter):
                 return False
 
         # Min Asset Value:
-        with contextlib.suppress(TypeError):
+        if self.min_asset_value is not None:
             if any(asset.value < self.min_asset_value for asset in package):
                 return False
 

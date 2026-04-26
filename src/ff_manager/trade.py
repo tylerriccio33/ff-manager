@@ -1,4 +1,4 @@
-from collections.abc import Callable, Generator
+from collections.abc import Callable, Generator, Iterable
 from copy import copy
 
 from ff_manager.model import Asset, Team
@@ -6,12 +6,12 @@ from ff_manager.utils import diff_assets
 
 
 class Package:
-    def __init__(self, assets: set[Asset]):
-        self.assets = assets
+    def __init__(self, assets: Iterable[Asset]):
+        self.assets = tuple(assets)
         self._positions = {getattr(asset, "pos", None) for asset in self.assets}
 
     def _get_composite_values(self) -> Generator:
-        return (asset.composite_value for asset in self.assets)
+        return (asset.value for asset in self.assets)
 
     def get_composite_values_corr(self) -> list:
         return list(self._get_composite_values())
@@ -48,7 +48,7 @@ class Trade:
         """Execute the trade."""
         # Create new team1:
         retained_assets = diff_assets(assets=self.team1.assets, rm=self.sent_assets)
-        new_team1_assets = tuple(retained_assets + self.rec_assets)
+        new_team1_assets = tuple(retained_assets) + tuple(self.rec_assets)
         self.new_team1 = Team(
             name=self.team1.name,
             assets=new_team1_assets,
@@ -59,7 +59,7 @@ class Trade:
 
         # Create new team2:
         retained_assets = diff_assets(assets=self.team2.assets, rm=self.rec_assets)
-        new_team2_assets = tuple(retained_assets + self.sent_assets)
+        new_team2_assets = tuple(retained_assets) + tuple(self.sent_assets)
         self.new_team2 = Team(
             name=self.team2.name,
             assets=new_team2_assets,

@@ -50,6 +50,8 @@ def print_trade_opts():
     filter_classes = [PackageFilter, ReceiveFilter, SendFilter]
     for cls in filter_classes:
         params = list(inspect.signature(cls).parameters)
+        if cls.__doc__ is None:
+            raise RuntimeError(f"{cls.__name__} is missing a docstring.")
         cur_doc_lines: list[str] = cls.__doc__.splitlines()
         for param in params:
             if param in ("self", "kwargs", "args"):
@@ -63,14 +65,11 @@ def print_trade_opts():
 
 @cli.command(help=main.__doc__)
 @click.argument("reqs")
-@click.argument(
-    "profile",
-)
-@click.option(
-    "--outdate_loc",
-)
-def find_trades(reqs, profile, outdate_loc=None):
-    main(reqs, profile, outdate_loc)
+@click.argument("profile")
+@click.argument("data_loc")
+@click.option("--refresh-data", is_flag=True, default=False)
+def find_trades(reqs, profile, data_loc, refresh_data):
+    main(reqs, profile, data_loc, refresh_data=refresh_data)
 
 
 if __name__ == "__main__":

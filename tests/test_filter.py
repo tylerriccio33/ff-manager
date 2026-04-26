@@ -29,7 +29,7 @@ def _conf_test(prof: str | Path, data: str | Path, reqs: dict) -> list:
         loaded_profile: dict = yaml.safe_load(fpath)
     league_cls = PLATFORM_SWITCH[loaded_profile["platform"]]
 
-    refresh_data = reqs.get("refresh_data")
+    refresh_data = bool(reqs.get("refresh_data"))
     league = league_cls(
         data_loc=data, profile=loaded_profile, refresh_data=refresh_data
     )
@@ -75,7 +75,7 @@ def test_return_contains1():
 def test_return_not_contains_pos():
     reqs = {"team": "team1", "max_fleece": 5, "return_not_pos": ["QB"]}
     with pytest.raises(
-        ValueError, match="No trades passed the package or receive filters."
+        ValueError, match=r"No trades passed the package or receive filters\."
     ):
         _conf_test("tests/data/sleeper-super1.json", "tests/data/2qb.json", reqs)
 
@@ -94,14 +94,14 @@ def test_return_contains_bad1():
     reqs = {"team": "team1", "max_fleece": 5, "return_contains": ["player-99"]}
     with pytest.raises(
         ValueError,
-        match="No opposing teams with trade candidates found.",
+        match=r"No opposing teams with trade candidates found\.",
     ):
         _conf_test("tests/data/sleeper-super1.json", "tests/data/2qb.json", reqs)
 
 
 def test_send_pos_bad():
     reqs = {"team": "team1", "max_fleece": 5, "pos": "RB", "target_pos": "QB"}
-    with pytest.raises(ValueError, match="No packages passed the send filter."):
+    with pytest.raises(ValueError, match=r"No packages passed the send filter\."):
         _conf_test("tests/data/sleeper-super1.json", "tests/data/2qb.json", reqs)
 
 
@@ -118,7 +118,7 @@ def test_not_assets1():
         "not_assets": "player-0",
         "target_pos": "QB",
     }
-    with pytest.raises(ValueError, match="No packages passed the send filter."):
+    with pytest.raises(ValueError, match=r"No packages passed the send filter\."):
         _conf_test("tests/data/sleeper-super1.json", "tests/data/2qb.json", reqs)
 
 
@@ -163,7 +163,7 @@ def test_min_asset_value_rm1():
         "min_asset_value": 6,
     }
 
-    with pytest.raises(ValueError, match="No packages passed the send filter."):
+    with pytest.raises(ValueError, match=r"No packages passed the send filter\."):
         _conf_test("tests/data/sleeper-super1.json", "tests/data/2qb-extra.json", reqs)
 
 

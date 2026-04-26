@@ -9,8 +9,7 @@ prof:
 	@uv run pytest --profile
 
 pre-commit: ## Stages all files
-	@git add .
-	@uv run pre-commit
+	@uv run pre-commit --all-files
 
 deps: ## Analyze dependancies
 	uv tool run deptry .
@@ -28,6 +27,6 @@ clean:
 	@rm .coverage
 
 lint:
-	@uvx ruff format
-	@uvx ruff check --fix
-	@uvx ty check
+	@uv run ruff format
+	@uv run ruff check --fix
+	@uv run ty check
