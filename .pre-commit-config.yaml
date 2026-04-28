@@ -19,3 +19,11 @@ repos:
       rev: v3.18.0
       hooks:
           - id: pyupgrade
+    - repo: local
+      hooks:
+          - id: ty
+            name: ty
+            entry: uv run ty check
+            language: system
+            types: [python]
+            pass_filenames: false

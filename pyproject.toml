@@ -46,7 +46,7 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "nfl-data-py>=0.3.2",
-    "pre-commit>=4.0.1",
+    "prek>=0.3.11",
     "pytest>=8.3.2",
     "pytest-cov>=5.0.0",
     "pytest-profiling>=1.7.0",

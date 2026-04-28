@@ -8,8 +8,11 @@ prof:
 	@.venv/bin/pytest
 	@uv run pytest --profile
 
-pre-commit: ## Stages all files
-	@uv run pre-commit --all-files
+prek:
+	@uv run prek run --all-files
+
+prek-install:
+	@uv run prek install
 
 deps: ## Analyze dependancies
 	uv tool run deptry .
