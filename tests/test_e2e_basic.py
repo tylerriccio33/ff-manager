@@ -23,79 +23,146 @@ QB1 for T2-RB1 would gain +35 but fleece team2 by 25).
 
 from __future__ import annotations
 
+import pytest
+
 from ff_manager.api import eval_trades
 from ff_manager.trade import Trade
+from tests.helpers import assert_results_invariants, assert_trade_invariants
+
+MAX_FLEECE = 20
+BASELINE_REQS: dict = {
+    "team": "team1",
+    "max_fleece": MAX_FLEECE,
+    "min_asset_value": 40,
+    "max_assets": 1,
+}
 
 
 def test_baseline_qb2_for_rb3(league_basic):
-    reqs = {
-        "team": "team1",
-        "max_fleece": 20,
-        "min_asset_value": 40,
-        "max_assets": 1,
-    }
-
     # Pre-trade lineup sanity (exercises league build + lineup setter).
     team1 = league_basic["team1"]
     team2 = league_basic["team2"]
     assert team1.set_lineup().total_value == 490
     assert team2.set_lineup().total_value == 450
 
-    trades = eval_trades(league=league_basic, reqs=reqs)
+    trades = eval_trades(league=league_basic, reqs=BASELINE_REQS)
+    assert_results_invariants(
+        trades,
+        max_fleece=MAX_FLEECE,
+        min_gain=0,
+    )
 
-    # The top-ranked trade (highest team1_gain) is QB2-for-RB3.
-    # Lesser positive-gain trades may also pass; we don't assert on them here.
-    assert len(trades) >= 1
+    # The top-ranked trade (highest team1_gain) is QB2-for-RB3, uniquely.
     trade = trades[0]
     assert isinstance(trade, Trade)
-    # No other trade ties the top gain — uniquely the best.
     assert all(t.team1_gain < trade.team1_gain for t in trades[1:])
 
-    # Identities of teams and assets.
+    # Exact-outcome assertions for the canonical trade.
     assert trade.team1.name == "team1"
     assert trade.team2.name == "team2"
     assert [a.name for a in trade.sent_assets] == ["T1-QB2"]
     assert [a.name for a in trade.rec_assets] == ["T2-RB3"]
-
-    # Pre-trade values.
-    assert trade.team1.lineup is not None
-    assert trade.team2.lineup is not None
-    assert trade.team1.lineup.total_value == 490
-    assert trade.team2.lineup.total_value == 450
-
-    # Post-trade values.
     assert trade.new_team1_value == 522
     assert trade.new_team2_value == 463
-
-    # Gains.
     assert trade.team1_gain == 32
     assert trade.team2_gain == 13
 
-    # Fleece is within bound (strict <, per loc_best_trades).
-    assert abs(trade.team1_gain - trade.team2_gain) < reqs["max_fleece"]
 
-    # Roster invariants: each team's post-trade asset count is preserved.
-    assert len(list(trade.new_team1.assets)) == len(list(team1.assets))
-    assert len(list(trade.new_team2.assets)) == len(list(team2.assets))
+def test_target_pos_rb_only(league_basic):
+    """Receiving package must contain an RB; top trade still QB2-for-RB3."""
+    reqs = {**BASELINE_REQS, "target_pos": "RB"}
+    trades = eval_trades(league=league_basic, reqs=reqs)
+    trades = assert_results_invariants(trades, max_fleece=MAX_FLEECE)
 
-    # Sent asset is gone from new team1; received asset is present.
-    new_t1_names = {a.name for a in trade.new_team1.assets}
-    assert "T1-QB2" not in new_t1_names
-    assert "T2-RB3" in new_t1_names
+    for t in trades:
+        assert any(a.pos == "RB" for a in t.rec_assets)
 
-    new_t2_names = {a.name for a in trade.new_team2.assets}
-    assert "T2-RB3" not in new_t2_names
-    assert "T1-QB2" in new_t2_names
+    top = trades[0]
+    assert [a.name for a in top.sent_assets] == ["T1-QB2"]
+    assert [a.name for a in top.rec_assets] == ["T2-RB3"]
 
-    # Lineup composition for new team1: QB1 keeps QB slot; T2-RB3 starts at RB.
-    assert trade.new_team1.lineup is not None
-    assert trade.new_team2.lineup is not None
-    new_t1_lineup_names = {p.name for p in trade.new_team1.lineup.data.values()}
-    assert "T1-QB1" in new_t1_lineup_names
-    assert "T2-RB3" in new_t1_lineup_names
-    assert "T1-QB2" not in new_t1_lineup_names
 
-    # Lineup composition for new team2: T1-QB2 takes QB slot.
-    new_t2_lineup_names = {p.name for p in trade.new_team2.lineup.data.values()}
-    assert "T1-QB2" in new_t2_lineup_names
-    assert "T2-RB3" not in new_t2_lineup_names
+def test_assets_from_team_only_team2(league_basic):
+    """Restricting opponents to team2 still yields QB2-for-RB3 as best."""
+    reqs = {**BASELINE_REQS, "assets_from_team": "team2"}
+    trades = eval_trades(league=league_basic, reqs=reqs)
+    trades = assert_results_invariants(trades, max_fleece=MAX_FLEECE)
+
+    for t in trades:
+        assert t.team2.name == "team2"
+
+    top = trades[0]
+    assert top.team1_gain == 32
+    assert top.team2_gain == 13
+
+
+def test_assets_not_from_team_team3(league_basic):
+    """Excluding team3 leaves only team2 trades; baseline still wins."""
+    reqs = {**BASELINE_REQS, "assets_not_from_team": "team3"}
+    trades = eval_trades(league=league_basic, reqs=reqs)
+    trades = assert_results_invariants(trades, max_fleece=MAX_FLEECE)
+
+    for t in trades:
+        assert t.team2.name != "team3"
+
+    top = trades[0]
+    assert [a.name for a in top.sent_assets] == ["T1-QB2"]
+    assert [a.name for a in top.rec_assets] == ["T2-RB3"]
+
+
+def test_return_contains_pins_target(league_basic):
+    """`return_contains` forces every trade's receive package to include T2-RB3."""
+    reqs = {**BASELINE_REQS, "return_contains": ["T2-RB3"]}
+    trades = eval_trades(league=league_basic, reqs=reqs)
+    trades = assert_results_invariants(trades, max_fleece=MAX_FLEECE)
+
+    for t in trades:
+        rec_names = [a.name for a in t.rec_assets]
+        assert "T2-RB3" in rec_names
+
+    top = trades[0]
+    assert top.team1_gain == 32
+    assert top.team2_gain == 13
+
+
+def test_max_assets_two_allows_packages(league_basic):
+    """
+    Allowing 2-asset packages yields ties on top gain via bench-padded variants.
+
+    The bench-padded duplicates produce identical (+32, +13) gains because
+    the extra assets are below the lineup-relevance threshold. The helper
+    still validates structural invariants on every trade.
+    """
+    reqs = {**BASELINE_REQS, "max_assets": 2}
+    trades = eval_trades(league=league_basic, reqs=reqs)
+    trades = assert_results_invariants(trades, max_fleece=MAX_FLEECE)
+
+    # With 2-asset packages, larger gains become reachable (e.g. send
+    # QB1+RB2 for T2-RB1 → +35/+20). The baseline 1-for-1 still appears
+    # somewhere in the result set.
+    top = trades[0]
+    assert top.team1_gain >= 32
+    assert any(
+        [a.name for a in t.sent_assets] == ["T1-QB2"]
+        and [a.name for a in t.rec_assets] == ["T2-RB3"]
+        for t in trades
+    )
+
+
+def test_no_trades_when_target_pos_unsendable(league_basic):
+    """Requiring receive-pos K (no kickers in fixture) yields no candidates."""
+    reqs = {**BASELINE_REQS, "target_pos": "K"}
+    with pytest.raises(ValueError, match="No trades passed"):
+        eval_trades(league=league_basic, reqs=reqs)
+
+
+def test_helper_catches_invariant_violation(league_basic):
+    """Sanity: the helper actually fails when invariants are broken."""
+    trades = eval_trades(league=league_basic, reqs=BASELINE_REQS)
+    trade = trades[0]
+    # Corrupt the recorded gain; the helper must catch the inconsistency.
+    original = trade.team1_gain
+    trade.team1_gain = original + 1
+    with pytest.raises(AssertionError):
+        assert_trade_invariants(trade, max_fleece=MAX_FLEECE)
+    trade.team1_gain = original
