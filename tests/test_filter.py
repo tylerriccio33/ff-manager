@@ -199,6 +199,19 @@ def test_max_assets(asset_len: int):
         assert len(trade.rec_assets) <= asset_len
 
 
+def test_return_does_not_contain():
+    """`return_does_not_contain` excludes named players from receive packages."""
+    reqs = {
+        "team": "team1",
+        "max_fleece": 5,
+        "return_does_not_contain": ["player-1"],
+    }
+    with pytest.raises(
+        ValueError, match=r"No trades passed the package or receive filters\."
+    ):
+        _conf_test("tests/data/sleeper-super1.json", "tests/data/2qb.json", reqs)
+
+
 def test_not_contains_pos():
     reqs = {
         "team": "team1",

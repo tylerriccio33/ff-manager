@@ -4,6 +4,12 @@ test:
 		--cov-report term-missing
 	@rm .coverage*
 
+test-e2e:
+	@uv run pytest tests/test_e2e_basic.py \
+		--cov src \
+		--cov-report term-missing
+	@rm .coverage*
+
 prof:
 	@.venv/bin/pytest
 	@uv run pytest --profile

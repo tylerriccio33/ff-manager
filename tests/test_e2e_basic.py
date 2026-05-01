@@ -27,6 +27,7 @@ import pytest
 
 from ff_manager.api import eval_trades
 from ff_manager.trade import Trade
+from ff_manager.utils import sink_repr
 from tests.helpers import assert_results_invariants, assert_trade_invariants
 
 MAX_FLEECE = 20
@@ -154,6 +155,16 @@ def test_no_trades_when_target_pos_unsendable(league_basic):
     reqs = {**BASELINE_REQS, "target_pos": "K"}
     with pytest.raises(ValueError, match="No trades passed"):
         eval_trades(league=league_basic, reqs=reqs)
+
+
+def test_sink_results_to_disk(league_basic, tmp_path):
+    """Final-stop check: trade results can be sunk to disk via sink_repr."""
+    trades = eval_trades(league=league_basic, reqs=BASELINE_REQS)
+    out = tmp_path / "trades.txt"
+    sink_repr(trades, out)
+    contents = out.read_text()
+    assert contents.strip()
+    assert contents.count("\n") >= len(trades) - 1
 
 
 def test_helper_catches_invariant_violation(league_basic):

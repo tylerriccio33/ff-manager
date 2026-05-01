@@ -1,6 +1,7 @@
 from collections.abc import Callable, Generator, Iterable
 from copy import copy
 
+from ff_manager.lineup import render_table
 from ff_manager.model import Asset, Team
 from ff_manager.utils import diff_assets
 
@@ -82,9 +83,9 @@ Team2:            {self.team2.name}
 Assets Sent:      {self.sent_assets}
 Assets Received:  {self.rec_assets}
 Team1 Lineup:
-{self.new_team1.lineup!r}
+{render_table(self.new_team1.lineup)}
 Team2 Lineup:
-{self.new_team2.lineup!r}
+{render_table(self.new_team2.lineup)}
 Team1 Gain:       {self.team1_gain:.2f}
 Team2 Gain:       {self.team2_gain:.2f}
 Team1 Value:      {self.new_team1_value:.2f}

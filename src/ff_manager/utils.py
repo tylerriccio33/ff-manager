@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import contextlib
-import re
 import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -59,51 +58,3 @@ def sink_repr(obj: Iterable, sink_to: str | Path, *, iter_obj: bool = True) -> N
         concatenated: str = "\n".join(str(obj) for obj in obj)
         print(concatenated)
         sys.stdout = original_stdout
-
-
-def _correct_fuzzy_team_names(invalid_names: set, valid_names: set) -> dict:
-    invalid_names_list = list(invalid_names)
-    valid_names_list = list(valid_names)
-
-    def _cleaner(val: str) -> str:
-        new_val = re.sub(r"<[^>]*>", "", val)
-        return " ".join(new_val.split())
-
-    def _cleaner2(val: str) -> str:
-        return re.sub(r"[^a-zA-Z0-9]", "", val)
-
-    clean_valids = [_cleaner(valid_name) for valid_name in valid_names_list]
-
-    name_map = {}
-    for name in invalid_names_list:
-        with contextlib.suppress(ValueError):
-            valid_name_i = valid_names_list.index(name)
-            name_map[name] = valid_names_list[valid_name_i]
-            continue
-
-        with contextlib.suppress(ValueError):
-            valid_name_i = clean_valids.index(name)
-            name_map[name] = valid_names_list[valid_name_i]
-            continue
-
-        with contextlib.suppress(ValueError):
-            clean_name = _cleaner(name)
-            valid_name_i = clean_valids.index(clean_name)
-            name_map[name] = valid_names_list[valid_name_i]
-            continue
-
-        with contextlib.suppress(ValueError):
-            cleaner_valids = [_cleaner2(valid_name) for valid_name in clean_valids]
-            valid_name_i = cleaner_valids.index(name)
-            name_map[name] = valid_names_list[valid_name_i]
-            continue
-
-        with contextlib.suppress(ValueError):
-            cleaner_name = _cleaner2(name)
-            valid_name_i = cleaner_valids.index(cleaner_name)
-            name_map[name] = valid_names_list[valid_name_i]
-            continue
-
-        raise ValueError(f"Could not map {name}")
-
-    return name_map
