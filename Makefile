@@ -8,6 +8,15 @@ prof:
 	@.venv/bin/pytest
 	@uv run pytest --profile
 
+.PHONY: bench
+bench:
+	@uv run pytest bench/ -v \
+		-o python_files='bench_*.py' \
+		--benchmark-only \
+		--benchmark-columns=min,mean,max \
+		--benchmark-time-unit=s \
+		--no-cov
+
 prek:
 	@uv run prek run --all-files
 

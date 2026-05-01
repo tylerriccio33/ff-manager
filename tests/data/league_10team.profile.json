@@ -1,0 +1,10 @@
+{
+    "platform": "sleeper",
+    "lineup": {
+        "QB": 1,
+        "RB": 2,
+        "WR": 2,
+        "TE": 1,
+        "FLEX": 2
+    }
+}

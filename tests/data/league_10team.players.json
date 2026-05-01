@@ -1,0 +1,1052 @@
+[
+  {
+    "id": 1,
+    "name": "ALP-QB1",
+    "pos": "QB",
+    "team": "alpha",
+    "value": 51
+  },
+  {
+    "id": 2,
+    "name": "ALP-QB2",
+    "pos": "QB",
+    "team": "alpha",
+    "value": 56
+  },
+  {
+    "id": 3,
+    "name": "ALP-RB1",
+    "pos": "RB",
+    "team": "alpha",
+    "value": 52
+  },
+  {
+    "id": 4,
+    "name": "ALP-RB2",
+    "pos": "RB",
+    "team": "alpha",
+    "value": 46
+  },
+  {
+    "id": 5,
+    "name": "ALP-RB3",
+    "pos": "RB",
+    "team": "alpha",
+    "value": 33
+  },
+  {
+    "id": 6,
+    "name": "ALP-RB4",
+    "pos": "RB",
+    "team": "alpha",
+    "value": 37
+  },
+  {
+    "id": 7,
+    "name": "ALP-RB5",
+    "pos": "RB",
+    "team": "alpha",
+    "value": 48
+  },
+  {
+    "id": 8,
+    "name": "ALP-WR1",
+    "pos": "WR",
+    "team": "alpha",
+    "value": 60
+  },
+  {
+    "id": 9,
+    "name": "ALP-WR2",
+    "pos": "WR",
+    "team": "alpha",
+    "value": 62
+  },
+  {
+    "id": 10,
+    "name": "ALP-WR3",
+    "pos": "WR",
+    "team": "alpha",
+    "value": 47
+  },
+  {
+    "id": 11,
+    "name": "ALP-WR4",
+    "pos": "WR",
+    "team": "alpha",
+    "value": 44
+  },
+  {
+    "id": 12,
+    "name": "ALP-WR5",
+    "pos": "WR",
+    "team": "alpha",
+    "value": 37
+  },
+  {
+    "id": 13,
+    "name": "ALP-WR6",
+    "pos": "WR",
+    "team": "alpha",
+    "value": 10
+  },
+  {
+    "id": 14,
+    "name": "ALP-TE1",
+    "pos": "TE",
+    "team": "alpha",
+    "value": 65
+  },
+  {
+    "id": 15,
+    "name": "ALP-TE2",
+    "pos": "TE",
+    "team": "alpha",
+    "value": 56
+  },
+  {
+    "id": 16,
+    "name": "BRA-QB1",
+    "pos": "QB",
+    "team": "bravo",
+    "value": 60
+  },
+  {
+    "id": 17,
+    "name": "BRA-QB2",
+    "pos": "QB",
+    "team": "bravo",
+    "value": 29
+  },
+  {
+    "id": 18,
+    "name": "BRA-RB1",
+    "pos": "RB",
+    "team": "bravo",
+    "value": 34
+  },
+  {
+    "id": 19,
+    "name": "BRA-RB2",
+    "pos": "RB",
+    "team": "bravo",
+    "value": 39
+  },
+  {
+    "id": 20,
+    "name": "BRA-RB3",
+    "pos": "RB",
+    "team": "bravo",
+    "value": 39
+  },
+  {
+    "id": 21,
+    "name": "BRA-RB4",
+    "pos": "RB",
+    "team": "bravo",
+    "value": 43
+  },
+  {
+    "id": 22,
+    "name": "BRA-RB5",
+    "pos": "RB",
+    "team": "bravo",
+    "value": 34
+  },
+  {
+    "id": 23,
+    "name": "BRA-WR1",
+    "pos": "WR",
+    "team": "bravo",
+    "value": 61
+  },
+  {
+    "id": 24,
+    "name": "BRA-WR2",
+    "pos": "WR",
+    "team": "bravo",
+    "value": 42
+  },
+  {
+    "id": 25,
+    "name": "BRA-WR3",
+    "pos": "WR",
+    "team": "bravo",
+    "value": 48
+  },
+  {
+    "id": 26,
+    "name": "BRA-WR4",
+    "pos": "WR",
+    "team": "bravo",
+    "value": 44
+  },
+  {
+    "id": 27,
+    "name": "BRA-WR5",
+    "pos": "WR",
+    "team": "bravo",
+    "value": 27
+  },
+  {
+    "id": 28,
+    "name": "BRA-WR6",
+    "pos": "WR",
+    "team": "bravo",
+    "value": 50
+  },
+  {
+    "id": 29,
+    "name": "BRA-TE1",
+    "pos": "TE",
+    "team": "bravo",
+    "value": 61
+  },
+  {
+    "id": 30,
+    "name": "BRA-TE2",
+    "pos": "TE",
+    "team": "bravo",
+    "value": 64
+  },
+  {
+    "id": 31,
+    "name": "CHA-QB1",
+    "pos": "QB",
+    "team": "charlie",
+    "value": 47
+  },
+  {
+    "id": 32,
+    "name": "CHA-QB2",
+    "pos": "QB",
+    "team": "charlie",
+    "value": 41
+  },
+  {
+    "id": 33,
+    "name": "CHA-RB1",
+    "pos": "RB",
+    "team": "charlie",
+    "value": 50
+  },
+  {
+    "id": 34,
+    "name": "CHA-RB2",
+    "pos": "RB",
+    "team": "charlie",
+    "value": 48
+  },
+  {
+    "id": 35,
+    "name": "CHA-RB3",
+    "pos": "RB",
+    "team": "charlie",
+    "value": 52
+  },
+  {
+    "id": 36,
+    "name": "CHA-RB4",
+    "pos": "RB",
+    "team": "charlie",
+    "value": 42
+  },
+  {
+    "id": 37,
+    "name": "CHA-RB5",
+    "pos": "RB",
+    "team": "charlie",
+    "value": 29
+  },
+  {
+    "id": 38,
+    "name": "CHA-WR1",
+    "pos": "WR",
+    "team": "charlie",
+    "value": 43
+  },
+  {
+    "id": 39,
+    "name": "CHA-WR2",
+    "pos": "WR",
+    "team": "charlie",
+    "value": 43
+  },
+  {
+    "id": 40,
+    "name": "CHA-WR3",
+    "pos": "WR",
+    "team": "charlie",
+    "value": 59
+  },
+  {
+    "id": 41,
+    "name": "CHA-WR4",
+    "pos": "WR",
+    "team": "charlie",
+    "value": 30
+  },
+  {
+    "id": 42,
+    "name": "CHA-WR5",
+    "pos": "WR",
+    "team": "charlie",
+    "value": 37
+  },
+  {
+    "id": 43,
+    "name": "CHA-WR6",
+    "pos": "WR",
+    "team": "charlie",
+    "value": 35
+  },
+  {
+    "id": 44,
+    "name": "CHA-TE1",
+    "pos": "TE",
+    "team": "charlie",
+    "value": 37
+  },
+  {
+    "id": 45,
+    "name": "CHA-TE2",
+    "pos": "TE",
+    "team": "charlie",
+    "value": 50
+  },
+  {
+    "id": 46,
+    "name": "DEL-QB1",
+    "pos": "QB",
+    "team": "delta",
+    "value": 70
+  },
+  {
+    "id": 47,
+    "name": "DEL-QB2",
+    "pos": "QB",
+    "team": "delta",
+    "value": 25
+  },
+  {
+    "id": 48,
+    "name": "DEL-RB1",
+    "pos": "RB",
+    "team": "delta",
+    "value": 51
+  },
+  {
+    "id": 49,
+    "name": "DEL-RB2",
+    "pos": "RB",
+    "team": "delta",
+    "value": 48
+  },
+  {
+    "id": 50,
+    "name": "DEL-RB3",
+    "pos": "RB",
+    "team": "delta",
+    "value": 35
+  },
+  {
+    "id": 51,
+    "name": "DEL-RB4",
+    "pos": "RB",
+    "team": "delta",
+    "value": 45
+  },
+  {
+    "id": 52,
+    "name": "DEL-RB5",
+    "pos": "RB",
+    "team": "delta",
+    "value": 34
+  },
+  {
+    "id": 53,
+    "name": "DEL-WR1",
+    "pos": "WR",
+    "team": "delta",
+    "value": 37
+  },
+  {
+    "id": 54,
+    "name": "DEL-WR2",
+    "pos": "WR",
+    "team": "delta",
+    "value": 59
+  },
+  {
+    "id": 55,
+    "name": "DEL-WR3",
+    "pos": "WR",
+    "team": "delta",
+    "value": 53
+  },
+  {
+    "id": 56,
+    "name": "DEL-WR4",
+    "pos": "WR",
+    "team": "delta",
+    "value": 51
+  },
+  {
+    "id": 57,
+    "name": "DEL-WR5",
+    "pos": "WR",
+    "team": "delta",
+    "value": 52
+  },
+  {
+    "id": 58,
+    "name": "DEL-WR6",
+    "pos": "WR",
+    "team": "delta",
+    "value": 34
+  },
+  {
+    "id": 59,
+    "name": "DEL-TE1",
+    "pos": "TE",
+    "team": "delta",
+    "value": 56
+  },
+  {
+    "id": 60,
+    "name": "DEL-TE2",
+    "pos": "TE",
+    "team": "delta",
+    "value": 34
+  },
+  {
+    "id": 61,
+    "name": "ECH-QB1",
+    "pos": "QB",
+    "team": "echo",
+    "value": 62
+  },
+  {
+    "id": 62,
+    "name": "ECH-QB2",
+    "pos": "QB",
+    "team": "echo",
+    "value": 42
+  },
+  {
+    "id": 63,
+    "name": "ECH-RB1",
+    "pos": "RB",
+    "team": "echo",
+    "value": 49
+  },
+  {
+    "id": 64,
+    "name": "ECH-RB2",
+    "pos": "RB",
+    "team": "echo",
+    "value": 34
+  },
+  {
+    "id": 65,
+    "name": "ECH-RB3",
+    "pos": "RB",
+    "team": "echo",
+    "value": 33
+  },
+  {
+    "id": 66,
+    "name": "ECH-RB4",
+    "pos": "RB",
+    "team": "echo",
+    "value": 33
+  },
+  {
+    "id": 67,
+    "name": "ECH-RB5",
+    "pos": "RB",
+    "team": "echo",
+    "value": 50
+  },
+  {
+    "id": 68,
+    "name": "ECH-WR1",
+    "pos": "WR",
+    "team": "echo",
+    "value": 30
+  },
+  {
+    "id": 69,
+    "name": "ECH-WR2",
+    "pos": "WR",
+    "team": "echo",
+    "value": 32
+  },
+  {
+    "id": 70,
+    "name": "ECH-WR3",
+    "pos": "WR",
+    "team": "echo",
+    "value": 47
+  },
+  {
+    "id": 71,
+    "name": "ECH-WR4",
+    "pos": "WR",
+    "team": "echo",
+    "value": 57
+  },
+  {
+    "id": 72,
+    "name": "ECH-WR5",
+    "pos": "WR",
+    "team": "echo",
+    "value": 41
+  },
+  {
+    "id": 73,
+    "name": "ECH-WR6",
+    "pos": "WR",
+    "team": "echo",
+    "value": 7
+  },
+  {
+    "id": 74,
+    "name": "ECH-TE1",
+    "pos": "TE",
+    "team": "echo",
+    "value": 24
+  },
+  {
+    "id": 75,
+    "name": "ECH-TE2",
+    "pos": "TE",
+    "team": "echo",
+    "value": 54
+  },
+  {
+    "id": 76,
+    "name": "FOX-QB1",
+    "pos": "QB",
+    "team": "foxtrot",
+    "value": 46
+  },
+  {
+    "id": 77,
+    "name": "FOX-QB2",
+    "pos": "QB",
+    "team": "foxtrot",
+    "value": 36
+  },
+  {
+    "id": 78,
+    "name": "FOX-RB1",
+    "pos": "RB",
+    "team": "foxtrot",
+    "value": 66
+  },
+  {
+    "id": 79,
+    "name": "FOX-RB2",
+    "pos": "RB",
+    "team": "foxtrot",
+    "value": 63
+  },
+  {
+    "id": 80,
+    "name": "FOX-RB3",
+    "pos": "RB",
+    "team": "foxtrot",
+    "value": 46
+  },
+  {
+    "id": 81,
+    "name": "FOX-RB4",
+    "pos": "RB",
+    "team": "foxtrot",
+    "value": 42
+  },
+  {
+    "id": 82,
+    "name": "FOX-RB5",
+    "pos": "RB",
+    "team": "foxtrot",
+    "value": 40
+  },
+  {
+    "id": 83,
+    "name": "FOX-WR1",
+    "pos": "WR",
+    "team": "foxtrot",
+    "value": 74
+  },
+  {
+    "id": 84,
+    "name": "FOX-WR2",
+    "pos": "WR",
+    "team": "foxtrot",
+    "value": 57
+  },
+  {
+    "id": 85,
+    "name": "FOX-WR3",
+    "pos": "WR",
+    "team": "foxtrot",
+    "value": 51
+  },
+  {
+    "id": 86,
+    "name": "FOX-WR4",
+    "pos": "WR",
+    "team": "foxtrot",
+    "value": 46
+  },
+  {
+    "id": 87,
+    "name": "FOX-WR5",
+    "pos": "WR",
+    "team": "foxtrot",
+    "value": 16
+  },
+  {
+    "id": 88,
+    "name": "FOX-WR6",
+    "pos": "WR",
+    "team": "foxtrot",
+    "value": 45
+  },
+  {
+    "id": 89,
+    "name": "FOX-TE1",
+    "pos": "TE",
+    "team": "foxtrot",
+    "value": 66
+  },
+  {
+    "id": 90,
+    "name": "FOX-TE2",
+    "pos": "TE",
+    "team": "foxtrot",
+    "value": 56
+  },
+  {
+    "id": 91,
+    "name": "GOL-QB1",
+    "pos": "QB",
+    "team": "golf",
+    "value": 31
+  },
+  {
+    "id": 92,
+    "name": "GOL-QB2",
+    "pos": "QB",
+    "team": "golf",
+    "value": 42
+  },
+  {
+    "id": 93,
+    "name": "GOL-RB1",
+    "pos": "RB",
+    "team": "golf",
+    "value": 65
+  },
+  {
+    "id": 94,
+    "name": "GOL-RB2",
+    "pos": "RB",
+    "team": "golf",
+    "value": 28
+  },
+  {
+    "id": 95,
+    "name": "GOL-RB3",
+    "pos": "RB",
+    "team": "golf",
+    "value": 42
+  },
+  {
+    "id": 96,
+    "name": "GOL-RB4",
+    "pos": "RB",
+    "team": "golf",
+    "value": 52
+  },
+  {
+    "id": 97,
+    "name": "GOL-RB5",
+    "pos": "RB",
+    "team": "golf",
+    "value": 19
+  },
+  {
+    "id": 98,
+    "name": "GOL-WR1",
+    "pos": "WR",
+    "team": "golf",
+    "value": 74
+  },
+  {
+    "id": 99,
+    "name": "GOL-WR2",
+    "pos": "WR",
+    "team": "golf",
+    "value": 56
+  },
+  {
+    "id": 100,
+    "name": "GOL-WR3",
+    "pos": "WR",
+    "team": "golf",
+    "value": 43
+  },
+  {
+    "id": 101,
+    "name": "GOL-WR4",
+    "pos": "WR",
+    "team": "golf",
+    "value": 43
+  },
+  {
+    "id": 102,
+    "name": "GOL-WR5",
+    "pos": "WR",
+    "team": "golf",
+    "value": 42
+  },
+  {
+    "id": 103,
+    "name": "GOL-WR6",
+    "pos": "WR",
+    "team": "golf",
+    "value": 31
+  },
+  {
+    "id": 104,
+    "name": "GOL-TE1",
+    "pos": "TE",
+    "team": "golf",
+    "value": 68
+  },
+  {
+    "id": 105,
+    "name": "GOL-TE2",
+    "pos": "TE",
+    "team": "golf",
+    "value": 42
+  },
+  {
+    "id": 106,
+    "name": "HOT-QB1",
+    "pos": "QB",
+    "team": "hotel",
+    "value": 50
+  },
+  {
+    "id": 107,
+    "name": "HOT-QB2",
+    "pos": "QB",
+    "team": "hotel",
+    "value": 62
+  },
+  {
+    "id": 108,
+    "name": "HOT-RB1",
+    "pos": "RB",
+    "team": "hotel",
+    "value": 55
+  },
+  {
+    "id": 109,
+    "name": "HOT-RB2",
+    "pos": "RB",
+    "team": "hotel",
+    "value": 39
+  },
+  {
+    "id": 110,
+    "name": "HOT-RB3",
+    "pos": "RB",
+    "team": "hotel",
+    "value": 56
+  },
+  {
+    "id": 111,
+    "name": "HOT-RB4",
+    "pos": "RB",
+    "team": "hotel",
+    "value": 57
+  },
+  {
+    "id": 112,
+    "name": "HOT-RB5",
+    "pos": "RB",
+    "team": "hotel",
+    "value": 29
+  },
+  {
+    "id": 113,
+    "name": "HOT-WR1",
+    "pos": "WR",
+    "team": "hotel",
+    "value": 38
+  },
+  {
+    "id": 114,
+    "name": "HOT-WR2",
+    "pos": "WR",
+    "team": "hotel",
+    "value": 48
+  },
+  {
+    "id": 115,
+    "name": "HOT-WR3",
+    "pos": "WR",
+    "team": "hotel",
+    "value": 43
+  },
+  {
+    "id": 116,
+    "name": "HOT-WR4",
+    "pos": "WR",
+    "team": "hotel",
+    "value": 36
+  },
+  {
+    "id": 117,
+    "name": "HOT-WR5",
+    "pos": "WR",
+    "team": "hotel",
+    "value": 51
+  },
+  {
+    "id": 118,
+    "name": "HOT-WR6",
+    "pos": "WR",
+    "team": "hotel",
+    "value": 17
+  },
+  {
+    "id": 119,
+    "name": "HOT-TE1",
+    "pos": "TE",
+    "team": "hotel",
+    "value": 70
+  },
+  {
+    "id": 120,
+    "name": "HOT-TE2",
+    "pos": "TE",
+    "team": "hotel",
+    "value": 34
+  },
+  {
+    "id": 121,
+    "name": "IND-QB1",
+    "pos": "QB",
+    "team": "india",
+    "value": 45
+  },
+  {
+    "id": 122,
+    "name": "IND-QB2",
+    "pos": "QB",
+    "team": "india",
+    "value": 57
+  },
+  {
+    "id": 123,
+    "name": "IND-RB1",
+    "pos": "RB",
+    "team": "india",
+    "value": 68
+  },
+  {
+    "id": 124,
+    "name": "IND-RB2",
+    "pos": "RB",
+    "team": "india",
+    "value": 60
+  },
+  {
+    "id": 125,
+    "name": "IND-RB3",
+    "pos": "RB",
+    "team": "india",
+    "value": 49
+  },
+  {
+    "id": 126,
+    "name": "IND-RB4",
+    "pos": "RB",
+    "team": "india",
+    "value": 41
+  },
+  {
+    "id": 127,
+    "name": "IND-RB5",
+    "pos": "RB",
+    "team": "india",
+    "value": 36
+  },
+  {
+    "id": 128,
+    "name": "IND-WR1",
+    "pos": "WR",
+    "team": "india",
+    "value": 61
+  },
+  {
+    "id": 129,
+    "name": "IND-WR2",
+    "pos": "WR",
+    "team": "india",
+    "value": 47
+  },
+  {
+    "id": 130,
+    "name": "IND-WR3",
+    "pos": "WR",
+    "team": "india",
+    "value": 48
+  },
+  {
+    "id": 131,
+    "name": "IND-WR4",
+    "pos": "WR",
+    "team": "india",
+    "value": 46
+  },
+  {
+    "id": 132,
+    "name": "IND-WR5",
+    "pos": "WR",
+    "team": "india",
+    "value": 35
+  },
+  {
+    "id": 133,
+    "name": "IND-WR6",
+    "pos": "WR",
+    "team": "india",
+    "value": 39
+  },
+  {
+    "id": 134,
+    "name": "IND-TE1",
+    "pos": "TE",
+    "team": "india",
+    "value": 61
+  },
+  {
+    "id": 135,
+    "name": "IND-TE2",
+    "pos": "TE",
+    "team": "india",
+    "value": 74
+  },
+  {
+    "id": 136,
+    "name": "JUL-QB1",
+    "pos": "QB",
+    "team": "juliet",
+    "value": 58
+  },
+  {
+    "id": 137,
+    "name": "JUL-QB2",
+    "pos": "QB",
+    "team": "juliet",
+    "value": 44
+  },
+  {
+    "id": 138,
+    "name": "JUL-RB1",
+    "pos": "RB",
+    "team": "juliet",
+    "value": 50
+  },
+  {
+    "id": 139,
+    "name": "JUL-RB2",
+    "pos": "RB",
+    "team": "juliet",
+    "value": 49
+  },
+  {
+    "id": 140,
+    "name": "JUL-RB3",
+    "pos": "RB",
+    "team": "juliet",
+    "value": 56
+  },
+  {
+    "id": 141,
+    "name": "JUL-RB4",
+    "pos": "RB",
+    "team": "juliet",
+    "value": 35
+  },
+  {
+    "id": 142,
+    "name": "JUL-RB5",
+    "pos": "RB",
+    "team": "juliet",
+    "value": 39
+  },
+  {
+    "id": 143,
+    "name": "JUL-WR1",
+    "pos": "WR",
+    "team": "juliet",
+    "value": 77
+  },
+  {
+    "id": 144,
+    "name": "JUL-WR2",
+    "pos": "WR",
+    "team": "juliet",
+    "value": 19
+  },
+  {
+    "id": 145,
+    "name": "JUL-WR3",
+    "pos": "WR",
+    "team": "juliet",
+    "value": 31
+  },
+  {
+    "id": 146,
+    "name": "JUL-WR4",
+    "pos": "WR",
+    "team": "juliet",
+    "value": 42
+  },
+  {
+    "id": 147,
+    "name": "JUL-WR5",
+    "pos": "WR",
+    "team": "juliet",
+    "value": 39
+  },
+  {
+    "id": 148,
+    "name": "JUL-WR6",
+    "pos": "WR",
+    "team": "juliet",
+    "value": 32
+  },
+  {
+    "id": 149,
+    "name": "JUL-TE1",
+    "pos": "TE",
+    "team": "juliet",
+    "value": 49
+  },
+  {
+    "id": 150,
+    "name": "JUL-TE2",
+    "pos": "TE",
+    "team": "juliet",
+    "value": 57
+  }
+]

@@ -159,3 +159,4 @@ tyler/
 .ds_store
 .vscode/
 .coverage*
+prof/
