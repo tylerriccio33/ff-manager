@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "click>=8.1.7",
+    "flask>=3.0",
     "duckdb>=1.1.0",
     "espn-api>=0.37.1",
     "loguru>=0.7.3",

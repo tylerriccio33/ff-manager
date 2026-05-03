@@ -40,6 +40,9 @@ opts:
 example:
 	@uv run ff-manager find-trades --help
 
+web:
+	@uv run python -m ff_manager.web
+
 clean:
 	@rm -rf .pytest_cache
 	@rm .coverage
